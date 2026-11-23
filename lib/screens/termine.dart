@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api.dart';
 import '../format.dart';
 import '../links.dart';
+import '../theme.dart';
 import '../widgets.dart';
 
 const _regionen = {'de': 'Deutschland', 'ez': 'Eurozone', 'us': 'USA', 'co': 'Unternehmen'};
@@ -136,8 +137,7 @@ class _TerminZeile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = termin;
-    final farbe = Theme.of(context).colorScheme;
-    final zeit = t.ohneZeit ? 'ganztägig' : (t.zeitpunkt != null ? '${zwei(t.zeitpunkt!.hour)}:${zwei(t.zeitpunkt!.minute)}' : t.zeit);
+        final zeit = t.ohneZeit ? 'ganztägig' : (t.zeitpunkt != null ? '${zwei(t.zeitpunkt!.hour)}:${zwei(t.zeitpunkt!.minute)}' : t.zeit);
     final zusatz = [
       _regionen[t.region] ?? t.region.toUpperCase(),
       if (t.zeitraum.isNotEmpty) t.zeitraum,
@@ -145,14 +145,15 @@ class _TerminZeile extends StatelessWidget {
       if (t.eigenePosition) 'eigene Position',
     ].join(' · ');
     return Container(
-      decoration: BoxDecoration(border: Border(left: BorderSide(color: t.wichtig ? farbe.primary : Colors.transparent, width: 4))),
+      decoration: BoxDecoration(border: Border(left: BorderSide(color: t.wichtig ? KZ.gold : Colors.transparent, width: 3))),
       child: ListTile(
-        leading: SizedBox(width: 64, child: Text(zeit, style: const TextStyle(fontFeatures: [FontFeature.tabularFigures()]))),
+        leading: SizedBox(width: 64, child: Text(zeit, style: KZ.meta.copyWith(color: KZ.creme, fontSize: 13))),
         title: Text(t.titel, style: TextStyle(fontWeight: t.wichtig ? FontWeight.w600 : FontWeight.normal)),
-        subtitle: Text([zusatz, if (t.erklaerung.isNotEmpty) t.erklaerung].join('\n')),
+        subtitle: Text([zusatz.toUpperCase(), if (t.erklaerung.isNotEmpty) t.erklaerung].join('\n'), style: KZ.meta),
         isThreeLine: t.erklaerung.isNotEmpty,
         trailing: IconButton(
           tooltip: 'In den Kalender',
+          color: KZ.gold,
           icon: const Icon(Icons.event_available),
           onPressed: t.ics.isEmpty ? null : () => oeffne(context, t.ics),
         ),

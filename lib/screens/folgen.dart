@@ -4,6 +4,7 @@ import '../api.dart';
 import '../format.dart';
 import '../links.dart';
 import '../player.dart';
+import '../theme.dart';
 import '../widgets.dart';
 
 class FolgenSeite extends StatelessWidget {
@@ -61,9 +62,9 @@ class _FolgeKachel extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(folge.titel, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  Text(folge.titel, maxLines: 3, overflow: TextOverflow.ellipsis, style: KZ.titel(15)),
                   const SizedBox(height: 4),
-                  Text(unterzeile, style: Theme.of(context).textTheme.bodySmall),
+                  Text(unterzeile, style: KZ.meta),
                 ],
               ),
             ),
@@ -72,6 +73,7 @@ class _FolgeKachel extends StatelessWidget {
               builder: (context, _) {
                 final laeuft = sp.url == folge.audio && sp.spielt;
                 return IconButton(
+                  color: KZ.gold,
                   tooltip: laeuft ? 'Pause' : 'Abspielen',
                   icon: Icon(laeuft ? Icons.pause_circle_outline : Icons.play_circle_outline, size: 32),
                   onPressed: folge.audio.isEmpty ? null : () => sp.spiele(folge.audio, folge.titel),
@@ -103,7 +105,7 @@ class FolgeDetail extends StatelessWidget {
               child: AspectRatio(aspectRatio: 16 / 9, child: Image.network(folge.bild, fit: BoxFit.cover)),
             ),
           const SizedBox(height: 12),
-          Text(folge.titel, style: Theme.of(context).textTheme.titleLarge),
+          Text(folge.titel, style: KZ.titel(24)),
           const SizedBox(height: 4),
           Text([
             if (folge.datum != null) tagUndZeit(folge.datum!),
@@ -124,7 +126,7 @@ class FolgeDetail extends StatelessWidget {
               ),
           ]),
           const SizedBox(height: 16),
-          SelectableText(folge.text),
+          SelectableText(folge.text, style: const TextStyle(height: 1.5)),
           const SizedBox(height: 16),
           if (folge.seite.isNotEmpty)
             TextButton(onPressed: () => oeffne(context, folge.seite), child: const Text('Folgenseite auf kurszettel.com')),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../links.dart';
+import '../logo.dart';
 import '../widgets.dart';
 
 class InfoSeite extends StatelessWidget {
@@ -12,6 +13,7 @@ class InfoSeite extends StatelessWidget {
         ListTile(leading: Icon(icon), title: Text(titel), onTap: () => oeffne(context, adresse), trailing: const Icon(Icons.open_in_new, size: 18));
     return ListView(
       children: [
+        const Padding(padding: EdgeInsets.fromLTRB(16, 28, 16, 8), child: Center(child: LogoBlock(groesse: 40))),
         const Padding(
           padding: EdgeInsets.fromLTRB(16, 20, 16, 4),
           child: Text(

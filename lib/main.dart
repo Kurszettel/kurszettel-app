@@ -1,37 +1,29 @@
 import 'package:flutter/material.dart';
 
+import 'logo.dart';
 import 'player.dart';
 import 'screens/folgen.dart';
+import 'screens/heute.dart';
 import 'screens/info.dart';
 import 'screens/news.dart';
 import 'screens/termine.dart';
+import 'theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const KurszettelApp());
 }
 
-const kNavy = Color(0xFF0F1A2B);
-const kGold = Color(0xFFB8962E);
-
 class KurszettelApp extends StatelessWidget {
   const KurszettelApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ThemeData thema(Brightness b) {
-      final schema = ColorScheme.fromSeed(seedColor: kNavy, brightness: b).copyWith(
-        primary: b == Brightness.dark ? kGold : kNavy,
-        secondary: kGold,
-      );
-      return ThemeData(colorScheme: schema, useMaterial3: true);
-    }
-
     return MaterialApp(
       title: 'Kurszettel',
       debugShowCheckedModeBanner: false,
-      theme: thema(Brightness.light),
-      darkTheme: thema(Brightness.dark),
+      theme: kurszettelThema(),
+      themeMode: ThemeMode.dark,
       home: const Startgeruest(),
     );
   }
@@ -46,26 +38,53 @@ class Startgeruest extends StatefulWidget {
 class _StartgeruestState extends State<Startgeruest> {
   int _seite = 0;
 
-  static const _titel = ['Folgen', 'Termine', 'News', 'Info'];
-  static const _seiten = [FolgenSeite(), TermineSeite(), NewsSeite(), InfoSeite()];
+  static const _titel = ['', 'Kurzmeldungen', 'Termine', 'Folgen'];
+
+  void _zeige(int i) => setState(() => _seite = i);
 
   @override
   Widget build(BuildContext context) {
+    final seiten = [
+      HeuteSeite(zeigeBereich: _zeige),
+      const NewsSeite(),
+      const TermineSeite(),
+      const FolgenSeite(),
+    ];
     return Scaffold(
-      appBar: AppBar(title: Text('Kurszettel · ${_titel[_seite]}')),
-      body: IndexedStack(index: _seite, children: _seiten),
+      appBar: AppBar(
+        titleSpacing: 16,
+        title: _seite == 0
+            ? const LogoZeile(groesse: 22)
+            : Row(children: [
+                const Ticks(em: 18),
+                const SizedBox(width: 10),
+                Text(_titel[_seite]),
+              ]),
+        actions: [
+          IconButton(
+            tooltip: 'Über Kurszettel',
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => Scaffold(appBar: AppBar(title: const Text('Über Kurszettel')), body: const InfoSeite()),
+            )),
+          ),
+        ],
+        bottom: const PreferredSize(preferredSize: Size.fromHeight(1), child: Divider(height: 1)),
+      ),
+      body: IndexedStack(index: _seite, children: seiten),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const MiniSpieler(),
           NavigationBar(
             selectedIndex: _seite,
-            onDestinationSelected: (i) => setState(() => _seite = i),
+            onDestinationSelected: _zeige,
+            height: 64,
             destinations: const [
-              NavigationDestination(icon: Icon(Icons.headphones_outlined), selectedIcon: Icon(Icons.headphones), label: 'Folgen'),
-              NavigationDestination(icon: Icon(Icons.event_outlined), selectedIcon: Icon(Icons.event), label: 'Termine'),
+              NavigationDestination(icon: Icon(Icons.today_outlined), selectedIcon: Icon(Icons.today), label: 'Heute'),
               NavigationDestination(icon: Icon(Icons.article_outlined), selectedIcon: Icon(Icons.article), label: 'News'),
-              NavigationDestination(icon: Icon(Icons.info_outline), selectedIcon: Icon(Icons.info), label: 'Info'),
+              NavigationDestination(icon: Icon(Icons.event_outlined), selectedIcon: Icon(Icons.event), label: 'Termine'),
+              NavigationDestination(icon: Icon(Icons.headphones_outlined), selectedIcon: Icon(Icons.headphones), label: 'Folgen'),
             ],
           ),
         ],

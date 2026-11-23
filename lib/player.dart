@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'format.dart';
+import 'theme.dart';
 
 /// Ein gemeinsamer Spieler für Folgen und vorgelesene Meldungen.
 /// Version 1: Wiedergabe in der App. Sperrbildschirm-Steuerung folgt (just_audio_background).
@@ -64,9 +65,8 @@ class MiniSpieler extends StatelessWidget {
       listenable: sp,
       builder: (context, _) {
         if (!sp.aktiv) return const SizedBox.shrink();
-        final farbe = Theme.of(context).colorScheme;
         return Material(
-          color: farbe.surfaceContainerHighest,
+          color: KZ.panel,
           child: SafeArea(
             top: false,
             bottom: false,
@@ -79,12 +79,13 @@ class MiniSpieler extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(sp.titel ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w600)),
+                            style: KZ.titel(14)),
                       ),
                       IconButton(tooltip: '15 Sekunden zurück', icon: const Icon(Icons.replay_10), onPressed: () => sp.springe(-15)),
                       IconButton(
                         tooltip: sp.spielt ? 'Pause' : 'Abspielen',
-                        icon: Icon(sp.spielt ? Icons.pause_circle_filled : Icons.play_circle_filled, size: 34),
+                        color: KZ.gold,
+                        icon: Icon(sp.spielt ? Icons.pause_circle_filled : Icons.play_circle_filled, size: 38),
                         onPressed: sp.umschalten,
                       ),
                       IconButton(tooltip: '30 Sekunden vor', icon: const Icon(Icons.forward_30), onPressed: () => sp.springe(30)),

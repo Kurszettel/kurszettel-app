@@ -4,6 +4,7 @@ import '../api.dart';
 import '../format.dart';
 import '../links.dart';
 import '../player.dart';
+import '../theme.dart';
 import '../widgets.dart';
 
 class NewsSeite extends StatelessWidget {
@@ -48,15 +49,25 @@ class _MeldungKachel extends StatelessWidget {
     if (m.entfernt) {
       return ListTile(title: const Text('Meldung entfernt'), subtitle: m.hinweis.isEmpty ? null : Text(m.hinweis));
     }
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      title: Text(m.titel, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text([
-        if (m.datum != null) tagUndZeit(m.datum!),
-        if (m.kategorie.isNotEmpty) m.kategorie,
-      ].join(' · ')),
-      trailing: m.audio.isEmpty ? null : _VorlesenKnopf(meldung: m),
+    return InkWell(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => MeldungDetail(meldung: m))),
+      child: Container(
+        decoration: BoxDecoration(border: Border(left: BorderSide(color: m.wichtig ? KZ.gold : Colors.transparent, width: 3))),
+        padding: const EdgeInsets.fromLTRB(13, 12, 4, 12),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text([
+                if (m.datum != null) tagUndZeit(m.datum!),
+                if (m.kategorie.isNotEmpty) m.kategorie.toUpperCase(),
+              ].join(' · '), style: KZ.meta),
+              const SizedBox(height: 4),
+              Text(m.titel, style: KZ.titel(17)),
+            ]),
+          ),
+          if (m.audio.isNotEmpty) _VorlesenKnopf(meldung: m),
+        ]),
+      ),
     );
   }
 }
@@ -74,6 +85,7 @@ class _VorlesenKnopf extends StatelessWidget {
         final laeuft = sp.url == meldung.audio && sp.spielt;
         return IconButton(
           tooltip: laeuft ? 'Pause' : 'Vorlesen',
+          color: KZ.gold,
           icon: Icon(laeuft ? Icons.pause_circle_outline : Icons.record_voice_over_outlined),
           onPressed: () => sp.spiele(meldung.audio, meldung.titel),
         );
@@ -101,11 +113,12 @@ class MeldungDetail extends StatelessWidget {
             if (m.kategorie.isNotEmpty) m.kategorie,
           ].join(' · '), style: klein),
           const SizedBox(height: 6),
-          Text(m.titel, style: Theme.of(context).textTheme.titleLarge),
+          Text(m.titel, style: KZ.titel(24)),
           const SizedBox(height: 12),
           if (m.audio.isNotEmpty)
             Align(alignment: Alignment.centerLeft, child: _VorlesenKnopf(meldung: m)),
-          for (final a in absaetze) Padding(padding: const EdgeInsets.only(bottom: 10), child: SelectableText(a.trim())),
+          for (final a in absaetze)
+            Padding(padding: const EdgeInsets.only(bottom: 12), child: SelectableText(a.trim(), style: const TextStyle(fontSize: 16, height: 1.55))),
           for (final v in m.vermerke) Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(v, style: klein)),
           for (final o in m.offenlegung) Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(o, style: klein)),
           const SizedBox(height: 8),

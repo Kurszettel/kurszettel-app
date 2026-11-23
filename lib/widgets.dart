@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme.dart';
+
 /// Lädt Daten, zeigt Ladeanzeige oder Fehler mit „Erneut versuchen“, erlaubt Herunterziehen zum Aktualisieren.
 class Lader<T> extends StatefulWidget {
   const Lader({super.key, required this.laden, required this.anzeige});
@@ -62,8 +64,6 @@ class Abschnitt extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),
-        child: Text(text.toUpperCase(),
-            style: TextStyle(
-                fontSize: 12, letterSpacing: 1.6, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.primary)),
+        child: Text(text.toUpperCase(), style: KZ.rubrik),
       );
 }

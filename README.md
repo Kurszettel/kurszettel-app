@@ -33,6 +33,7 @@ Lokal (falls jemand übernimmt): Flutter stable installieren, dann `flutter pub 
 
 - Testfassung Android: mit dem Debug-Schlüssel signiert, nur zum Ausprobieren. Für Website- und Store-Verteilung kommt ein eigener Signierschlüssel (Geheimnisse im Repository-Bereich *Settings → Secrets*, nie im Code).
 - iOS: Code ist gemeinsam; Bau und Test erst mit dem Apple-Entwicklerkonto der Kurszettel GmbH (Codemagic oder TestFlight).
-- Noch nicht drin: Wiedergabe mit Sperrbildschirm-Steuerung, Hinweis auf neue Version, App-Symbol.
+- Gestaltung nach design-logo.md: Navy, Creme, Gold, Ticks; Schriften Libre Caslon Text (Titel), IBM Plex Mono (Meta), IBM Plex Sans (Text) – OFL-Lizenzen in assets/fonts. App-Symbol aus assets/icon (Kurs/zettel).
+- Noch nicht drin: Wiedergabe mit Sperrbildschirm-Steuerung, Hinweis auf neue Version.
 
 Verantwortlich: Steffen Reukauf, podcast@kurszettel.com. Code wird von Claude (Anthropic) geschrieben und gepflegt.
