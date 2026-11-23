@@ -55,7 +55,7 @@ class _StartgeruestState extends State<Startgeruest> {
       appBar: AppBar(
         titleSpacing: 16,
         title: _seite == 0
-            ? const LogoZeile(groesse: 22)
+            ? null
             : Row(children: [
                 const Ticks(em: 18),
                 const SizedBox(width: 10),

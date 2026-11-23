@@ -137,7 +137,7 @@ class _TerminZeile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = termin;
-        final zeit = t.ohneZeit ? 'ganztägig' : (t.zeitpunkt != null ? '${zwei(t.zeitpunkt!.hour)}:${zwei(t.zeitpunkt!.minute)}' : t.zeit);
+        final zeit = t.ohneZeit ? 'ganzer\nTag' : (t.zeitpunkt != null ? '${zwei(t.zeitpunkt!.hour)}:${zwei(t.zeitpunkt!.minute)}' : t.zeit);
     final zusatz = [
       _regionen[t.region] ?? t.region.toUpperCase(),
       if (t.zeitraum.isNotEmpty) t.zeitraum,
@@ -147,7 +147,7 @@ class _TerminZeile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(border: Border(left: BorderSide(color: t.wichtig ? KZ.gold : Colors.transparent, width: 3))),
       child: ListTile(
-        leading: SizedBox(width: 64, child: Text(zeit, style: KZ.meta.copyWith(color: KZ.creme, fontSize: 13))),
+        leading: SizedBox(width: 58, child: Text(zeit, style: KZ.meta.copyWith(color: KZ.creme, fontSize: 13))),
         title: Text(t.titel, style: TextStyle(fontWeight: t.wichtig ? FontWeight.w600 : FontWeight.normal)),
         subtitle: Text([zusatz.toUpperCase(), if (t.erklaerung.isNotEmpty) t.erklaerung].join('\n'), style: KZ.meta),
         isThreeLine: t.erklaerung.isNotEmpty,

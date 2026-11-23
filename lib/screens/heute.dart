@@ -213,12 +213,12 @@ class _TerminKurz extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = termin;
     final d = t.zeitpunkt ?? DateTime.tryParse(t.datum);
-    final wann = d == null ? t.datum : (t.ohneZeit ? tagKurz(d) : '${tagKurz(d)}, ${zwei(d.hour)}:${zwei(d.minute)}');
+    final wann = d == null ? t.datum : (t.ohneZeit ? '${tagKurz(d)}\nganzer Tag' : '${tagKurz(d)}\n${zwei(d.hour)}:${zwei(d.minute)} Uhr');
     return Container(
       decoration: BoxDecoration(border: Border(left: BorderSide(color: t.wichtig ? KZ.gold : Colors.transparent, width: 3))),
       padding: const EdgeInsets.fromLTRB(13, 10, 14, 10),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(width: 118, child: Text(wann, style: KZ.meta.copyWith(color: KZ.creme))),
+        SizedBox(width: 112, child: Text(wann, style: KZ.meta.copyWith(color: KZ.creme))),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(t.titel, style: const TextStyle(fontWeight: FontWeight.w600)),
