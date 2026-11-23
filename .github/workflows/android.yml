@@ -1,0 +1,79 @@
+name: Android-Testfassung
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter-Version
+        run: flutter --version
+
+      # Einmalig: Plattformordner android/ und ios/ erzeugen und ins Repository zurückschreiben.
+      - name: Plattformordner anlegen (nur beim ersten Lauf)
+        run: |
+          if [ ! -d android ]; then
+            flutter create --platforms=android,ios --org com.kurszettel --project-name kurszettel --no-pub .
+            rm -f test/widget_test.dart
+            # Store-Kennung festlegen (nicht mehr änderbar, sobald die App im Store ist)
+            sed -i 's/applicationId = "com.kurszettel.kurszettel"/applicationId = "com.kurszettel.app"/' android/app/build.gradle.kts
+            # Internetzugriff auch in der Release-Fassung, Name „Kurszettel“
+            sed -i '0,/<manifest[^>]*>/s//&\n    <uses-permission android:name="android.permission.INTERNET"\/>/' android/app/src/main/AndroidManifest.xml
+            sed -i 's/android:label="kurszettel"/android:label="Kurszettel"/' android/app/src/main/AndroidManifest.xml
+            sed -i 's#<string>kurszettel</string>#<string>Kurszettel</string>#' ios/Runner/Info.plist || true
+            echo "BOOTSTRAP=1" >> "$GITHUB_ENV"
+          fi
+
+      - run: flutter pub get
+
+      - name: Code prüfen
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Tests
+        run: flutter test
+
+      - name: APK bauen
+        run: flutter build apk --release
+
+      - name: Plattformordner zurückschreiben
+        if: env.BOOTSTRAP == '1'
+        run: |
+          git config user.name "kurszettel-bot"
+          git config user.email "podcast@kurszettel.com"
+          git add android ios .metadata pubspec.lock
+          git commit -m "Plattformordner android/ios erzeugt (flutter create) [skip ci]"
+          git push
+
+      - name: Testfassung veröffentlichen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk kurszettel-test.apk
+          sha256sum kurszettel-test.apk > kurszettel-test.apk.sha256
+          gh release delete test-latest --yes --cleanup-tag || true
+          gh release create test-latest kurszettel-test.apk kurszettel-test.apk.sha256 \
+            --prerelease --title "Testfassung (automatisch)" \
+            --notes "Automatisch gebaut aus Commit ${GITHUB_SHA::7} am $(date -u +'%d.%m.%Y %H:%M') UTC. Nur zum Testen."
