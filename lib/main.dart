@@ -36,7 +36,8 @@ class Startgeruest extends StatefulWidget {
 }
 
 class _StartgeruestState extends State<Startgeruest> {
-  int _seite = 0;
+  // Startreiter über ?tab=N (nur für Bildschirmfotos im Bau; auf dem Handy ohne Wirkung).
+  int _seite = (int.tryParse(Uri.base.queryParameters['tab'] ?? '') ?? 0).clamp(0, 3);
 
   static const _titel = ['', 'Kurzmeldungen', 'Termine', 'Folgen'];
 
