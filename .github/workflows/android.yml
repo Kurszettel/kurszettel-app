@@ -58,8 +58,30 @@ jobs:
       - name: Tests
         run: flutter test
 
+      # Fester Signierschlüssel aus den Repository-Geheimnissen (legt Steffen an).
+      # Ohne Geheimnisse wird mit dem Testschlüssel des Laufs signiert.
+      - name: Signierschlüssel bereitstellen
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            printf '%s' "$KS_B64" | base64 -d > "$RUNNER_TEMP/kurszettel.p12"
+            echo "KZ_KEYSTORE=$RUNNER_TEMP/kurszettel.p12" >> "$GITHUB_ENV"
+            echo "KZ_SIGNATUR=fester Schlüssel" >> "$GITHUB_ENV"
+          else
+            echo "KZ_SIGNATUR=Testschlüssel (wechselt je Bau)" >> "$GITHUB_ENV"
+          fi
+
       - name: APK bauen
+        env:
+          KZ_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: flutter build apk --release
+
+      - name: Signatur prüfen
+        run: |
+          APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          "$APKSIGNER" verify --print-certs build/app/outputs/flutter-apk/app-release.apk | grep -E "certificate DN|SHA-256" | tee signatur.txt
+          rm -f "$RUNNER_TEMP/kurszettel.p12"
 
       - name: Plattformordner zurückschreiben
         if: env.BOOTSTRAP == '1'
@@ -79,7 +101,7 @@ jobs:
           gh release delete test-latest --yes --cleanup-tag || true
           gh release create test-latest kurszettel-test.apk kurszettel-test.apk.sha256 \
             --prerelease --title "Testfassung (automatisch)" \
-            --notes "Automatisch gebaut aus Commit ${GITHUB_SHA::7} am $(date -u +'%d.%m.%Y %H:%M') UTC. Nur zum Testen."
+            --notes "Automatisch gebaut aus Commit ${GITHUB_SHA::7} am $(date -u +'%d.%m.%Y %H:%M') UTC. Nur zum Testen. Signatur: ${KZ_SIGNATUR}. $(tr '\n' ' ' < signatur.txt)"
 
   screenshots:
     runs-on: ubuntu-latest

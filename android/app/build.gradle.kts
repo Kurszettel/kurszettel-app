@@ -29,11 +29,27 @@ android {
         versionName = flutter.versionName
     }
 
+    // Fester Signierschlüssel: Der Bau bei GitHub legt die Schlüsseldatei aus den
+    // Repository-Geheimnissen ab und nennt den Pfad in KZ_KEYSTORE. Fehlt sie
+    // (lokaler Bau, Geheimnisse nicht gesetzt), wird mit dem Testschlüssel signiert.
+    val kzKeystore: String? = System.getenv("KZ_KEYSTORE")
+    val kzSigniert = kzKeystore != null && file(kzKeystore).exists()
+
+    signingConfigs {
+        if (kzSigniert) {
+            create("release") {
+                storeFile = file(kzKeystore!!)
+                storeType = "pkcs12"
+                storePassword = System.getenv("KZ_KEYSTORE_PASSWORD")
+                keyAlias = "kurszettel"
+                keyPassword = System.getenv("KZ_KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (kzSigniert) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }
 }
