@@ -36,4 +36,8 @@ Lokal (falls jemand übernimmt): Flutter stable installieren, dann `flutter pub 
 - Gestaltung nach design-logo.md: Navy, Creme, Gold, Ticks; Schriften Libre Caslon Text (Titel), IBM Plex Mono (Meta), IBM Plex Sans (Text) – OFL-Lizenzen in assets/fonts. App-Symbol aus assets/icon: nur die beiden Ticks, ohne Schrift.
 - Noch nicht drin: Wiedergabe mit Sperrbildschirm-Steuerung, Hinweis auf neue Version.
 
+## Lizenz
+
+Freie Software unter der GNU General Public License, Version 3 oder später (siehe `LICENSE`). Der Name „Kurszettel“ und das Logo sind nicht Teil der Lizenz. Schriften unter der SIL Open Font License (`assets/fonts`).
+
 Verantwortlich: Steffen Reukauf, podcast@kurszettel.com. Code wird von Claude (Anthropic) geschrieben und gepflegt.
