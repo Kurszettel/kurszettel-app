@@ -17,11 +17,14 @@ class Spieler extends ChangeNotifier {
   String? titel;
   String? url;
 
+  /// Zusatzzeile unter dem Titel, z. B. Kennzeichnung der künstlichen Stimme.
+  String? zusatz;
+
   AudioPlayer get player => _player;
   bool get aktiv => url != null;
   bool get spielt => _player.playing;
 
-  Future<void> spiele(String neueUrl, String neuerTitel, {String bild = '', String art = 'Kurszettel'}) async {
+  Future<void> spiele(String neueUrl, String neuerTitel, {String bild = '', String art = 'Kurszettel', String? hinweis}) async {
     if (neueUrl.isEmpty) return;
     if (url == neueUrl) {
       _player.playing ? await _player.pause() : await _player.play();
@@ -29,6 +32,7 @@ class Spieler extends ChangeNotifier {
     }
     url = neueUrl;
     titel = neuerTitel;
+    zusatz = hinweis;
     notifyListeners();
     try {
       await _player.setAudioSource(AudioSource.uri(
@@ -37,7 +41,7 @@ class Spieler extends ChangeNotifier {
           id: neueUrl,
           title: neuerTitel,
           album: art,
-          artist: 'Kurszettel',
+          artist: hinweis ?? 'Kurszettel',
           artUri: bild.isEmpty ? null : Uri.parse(bild),
         ),
       ));
@@ -88,8 +92,15 @@ class MiniSpieler extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(sp.titel ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
-                            style: KZ.titel(14)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(sp.titel ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: KZ.titel(14)),
+                            if ((sp.zusatz ?? '').isNotEmpty)
+                              Text(sp.zusatz!, maxLines: 1, overflow: TextOverflow.ellipsis, style: KZ.meta),
+                          ],
+                        ),
                       ),
                       IconButton(tooltip: '15 Sekunden zurück', icon: const Icon(Icons.replay_10), onPressed: () => sp.springe(-15)),
                       IconButton(
