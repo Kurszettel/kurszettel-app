@@ -141,3 +141,21 @@ Future<MeldungsListe> ladeNews() async {
   final liste = ((d['news'] as List?) ?? []).whereType<Map<String, dynamic>>().map(Meldung.fromJson).toList();
   return MeldungsListe(liste, _s(d['sprecherin']));
 }
+
+// ---------------- App-Stand (Update über die Homepage) ----------------
+
+class AppStand {
+  AppStand(this.version, this.build, this.url);
+  final String version;
+  final int build;
+  final String url;
+}
+
+/// Liest das Feld `app` der Schnittstellen-Übersicht ({version, build, url}); null, solange es fehlt.
+Future<AppStand?> ladeAppStand() async {
+  final d = await _getJson('');
+  final a = d['app'];
+  if (a is! Map) return null;
+  final b = a['build'];
+  return AppStand(_s(a['version']), b is int ? b : int.tryParse(_s(b)) ?? 0, _s(a['url']));
+}

@@ -102,7 +102,7 @@ jobs:
         run: |
           cd build/web && (python3 -m http.server 8080 >/dev/null 2>&1 &) && sleep 2 && cd ../..
           mkdir -p shots
-          for t in 0 1 2 3; do
+          for t in 0 1 2 3 4; do
             google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=412,915 --force-device-scale-factor=2 \
               --virtual-time-budget=25000 --screenshot=shots/tab$t.png "http://localhost:8080/?tab=$t" || true
           done

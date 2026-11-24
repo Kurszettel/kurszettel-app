@@ -65,8 +65,8 @@ ThemeData kurszettelThema() {
           (s) => IconThemeData(color: s.contains(WidgetState.selected) ? KZ.gold : KZ.grau)),
       labelTextStyle: WidgetStateProperty.resolveWith((s) => TextStyle(
           fontFamily: KZ.mono,
-          fontSize: 11,
-          letterSpacing: 0.6,
+          fontSize: 10,
+          letterSpacing: 0,
           color: s.contains(WidgetState.selected) ? KZ.gold : KZ.grau)),
     ),
     dividerTheme: const DividerThemeData(color: KZ.linie, thickness: 1, space: 1),

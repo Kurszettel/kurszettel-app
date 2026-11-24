@@ -7,7 +7,7 @@ App zum Podcast **Kurszettel** (kurszettel.com) für Android und iOS: Podcast-Fo
 | Pfad | Inhalt |
 |---|---|
 | `lib/api.dart` | Zugriff auf die Schnittstelle `https://kurszettel.com/api` (Folgen, Termine, News) |
-| `lib/screens/` | Die vier Bereiche: Folgen, Termine, News, Info |
+| `lib/screens/` | Die fünf Bereiche: Heute, News, Termine, Folgen, Einstellungen |
 | `lib/player.dart` | Gemeinsamer Audio-Spieler (just_audio) mit Mini-Leiste |
 | `lib/format.dart` | Deutsche Datums- und Zeitangaben |
 | `.github/workflows/android.yml` | Automatischer Bau bei jedem Push auf `main` |

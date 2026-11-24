@@ -5,7 +5,7 @@ import 'logo.dart';
 import 'player.dart';
 import 'screens/folgen.dart';
 import 'screens/heute.dart';
-import 'screens/info.dart';
+import 'screens/einstellungen.dart';
 import 'screens/news.dart';
 import 'screens/termine.dart';
 import 'theme.dart';
@@ -45,9 +45,9 @@ class Startgeruest extends StatefulWidget {
 
 class _StartgeruestState extends State<Startgeruest> {
   // Startreiter über ?tab=N (nur für Bildschirmfotos im Bau; auf dem Handy ohne Wirkung).
-  int _seite = (int.tryParse(Uri.base.queryParameters['tab'] ?? '') ?? 0).clamp(0, 3);
+  int _seite = (int.tryParse(Uri.base.queryParameters['tab'] ?? '') ?? 0).clamp(0, 4);
 
-  static const _titel = ['', 'Kurzmeldungen', 'Termine', 'Folgen'];
+  static const _titel = ['', 'Kurzmeldungen', 'Termine', 'Folgen', 'Einstellungen'];
 
   void _zeige(int i) => setState(() => _seite = i);
 
@@ -58,6 +58,7 @@ class _StartgeruestState extends State<Startgeruest> {
       const NewsSeite(),
       const TermineSeite(),
       const FolgenSeite(),
+      const EinstellungenSeite(),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -65,19 +66,10 @@ class _StartgeruestState extends State<Startgeruest> {
         title: _seite == 0
             ? null
             : Row(children: [
-                const Ticks(em: 18),
-                const SizedBox(width: 10),
+                const Ticks(em: 34),
+                const SizedBox(width: 12),
                 Text(_titel[_seite]),
               ]),
-        actions: [
-          IconButton(
-            tooltip: 'Über Kurszettel',
-            icon: const Icon(Icons.info_outline),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => Scaffold(appBar: AppBar(title: const Text('Über Kurszettel')), body: const InfoSeite()),
-            )),
-          ),
-        ],
         bottom: const PreferredSize(preferredSize: Size.fromHeight(1), child: Divider(height: 1)),
       ),
       body: IndexedStack(index: _seite, children: seiten),
@@ -94,6 +86,7 @@ class _StartgeruestState extends State<Startgeruest> {
               NavigationDestination(icon: Icon(Icons.article_outlined), selectedIcon: Icon(Icons.article), label: 'News'),
               NavigationDestination(icon: Icon(Icons.event_outlined), selectedIcon: Icon(Icons.event), label: 'Termine'),
               NavigationDestination(icon: Icon(Icons.headphones_outlined), selectedIcon: Icon(Icons.headphones), label: 'Folgen'),
+              NavigationDestination(icon: Icon(Icons.settings_outlined), selectedIcon: Icon(Icons.settings), label: 'Einstellungen'),
             ],
           ),
         ],
