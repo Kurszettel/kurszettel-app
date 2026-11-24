@@ -1,7 +1,7 @@
 name: kurszettel
 description: "Kurszettel – Podcast-Folgen, Börsentermine und Kurzmeldungen."
 publish_to: 'none'
-version: 0.3.6+10
+version: 0.3.7+11
 
 environment:
   sdk: ^3.5.0

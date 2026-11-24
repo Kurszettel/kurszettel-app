@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
-import 'api.dart' show kUserAgent;
 import 'format.dart';
 import 'theme.dart';
 
@@ -15,7 +13,9 @@ class Spieler extends ChangeNotifier {
   }
   static final Spieler instanz = Spieler._();
 
-  final AudioPlayer _player = AudioPlayer(userAgent: kIsWeb ? null : kUserAgent);
+  // Keine eigene Kennung für den Spieler: just_audio leitet Abrufe mit gesetzter Kennung über einen
+  // lokalen Zwischenserver ohne Verschlüsselung, den Android blockiert – dann spielt nichts.
+  final AudioPlayer _player = AudioPlayer();
   String? titel;
   String? url;
 
