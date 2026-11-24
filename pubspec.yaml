@@ -1,7 +1,7 @@
 name: kurszettel
 description: "Kurszettel – Podcast-Folgen, Börsentermine und Kurzmeldungen."
 publish_to: 'none'
-version: 0.2.0+2
+version: 0.2.1+3
 
 environment:
   sdk: ^3.5.0
@@ -39,7 +39,7 @@ flutter:
         - asset: assets/fonts/IBMPlexSans-SemiBold.ttf
           weight: 600
 
-# App-Symbol in der Icon-Form „Kurs/zettel“ (design-logo.md). Erzeugt im Bau mit: dart run flutter_launcher_icons
+# App-Symbol: nur die beiden Ticks nebeneinander, ohne Schrift (Steffen, 24.11.2026). Erzeugt im Bau mit: dart run flutter_launcher_icons
 flutter_launcher_icons:
   android: true
   ios: true
