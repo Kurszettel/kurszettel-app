@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart' show LicenseRegistry, LicenseEntryWithLineBreaks;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
+import 'api.dart' show kUserAgent;
 import 'logo.dart';
 import 'player.dart';
 import 'screens/folgen.dart';
@@ -19,6 +23,16 @@ Future<void> main() async {
     androidNotificationChannelName: 'Wiedergabe',
     androidNotificationOngoing: true,
   );
+  // Kennung „Kurszettel-App/x.y.z“ für Abrufe bei kurszettel.com.
+  try {
+    final info = await PackageInfo.fromPlatform();
+    kUserAgent = 'Kurszettel-App/${info.version}';
+  } catch (_) {}
+  // Lizenzen der eingebetteten Schriften (SIL Open Font License 1.1) in die Lizenzseite aufnehmen.
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(['IBM Plex Sans', 'IBM Plex Mono'], await rootBundle.loadString('assets/fonts/OFL-IBMPlex.txt'));
+    yield LicenseEntryWithLineBreaks(['Libre Caslon Text'], await rootBundle.loadString('assets/fonts/OFL-LibreCaslonText.txt'));
+  });
   runApp(const KurszettelApp());
 }
 

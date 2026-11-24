@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
+
+/// Kennung der App bei Abrufen (wird beim Start um die Versionsnummer ergänzt).
+String kUserAgent = 'Kurszettel-App';
 
 /// Basisadresse der Schnittstelle (siehe Projektnotiz app-schnittstelle.md).
 const String kApiBase = 'https://kurszettel.com/api';
@@ -16,7 +20,7 @@ Future<Map<String, dynamic>> _getJson(String path, [Map<String, String>? query])
   final uri = Uri.parse('$kApiBase/$path').replace(queryParameters: query);
   final http.Response res;
   try {
-    res = await http.get(uri, headers: {'Accept': 'application/json'}).timeout(const Duration(seconds: 15));
+    res = await http.get(uri, headers: {'Accept': 'application/json', if (!kIsWeb) 'User-Agent': kUserAgent}).timeout(const Duration(seconds: 15));
   } catch (_) {
     throw ApiException('Keine Verbindung zu kurszettel.com.');
   }

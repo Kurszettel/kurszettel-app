@@ -1,7 +1,7 @@
 name: kurszettel
 description: "Kurszettel – Podcast-Folgen, Börsentermine und Kurzmeldungen."
 publish_to: 'none'
-version: 0.3.5+9
+version: 0.3.6+10
 
 environment:
   sdk: ^3.5.0
@@ -26,6 +26,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/lizenz/GPL-3.0.txt
+    - assets/fonts/OFL-IBMPlex.txt
+    - assets/fonts/OFL-LibreCaslonText.txt
   fonts:
     - family: LibreCaslonText
       fonts:

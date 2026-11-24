@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
+import 'api.dart' show kUserAgent;
 import 'format.dart';
 import 'theme.dart';
 
@@ -13,7 +15,7 @@ class Spieler extends ChangeNotifier {
   }
   static final Spieler instanz = Spieler._();
 
-  final AudioPlayer _player = AudioPlayer();
+  final AudioPlayer _player = AudioPlayer(userAgent: kIsWeb ? null : kUserAgent);
   String? titel;
   String? url;
 
