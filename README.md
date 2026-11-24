@@ -14,7 +14,9 @@ App zum Podcast **Kurszettel** (kurszettel.com) für Android und iOS: Podcast-Fo
 
 **Nicht Teil dieses Repositorys und nicht öffentlich:** die Skripte auf dem Server von kurszettel.com (Meldungen, Freigabe, Termine, Schnittstelle). Offen ist nur die App.
 
-Die Schnittstelle liegt auf dem Webserver (`public_html/api/index.php`) und ist in der Projektnotiz `app-schnittstelle.md` beschrieben. Die App speichert keine Nutzerdaten außer der Terminauswahl auf dem Gerät.
+Die App liest ihre Inhalte aus der öffentlichen Schnittstelle `https://kurszettel.com/api/` (nur lesend, JSON und Kalenderdateien). Sie braucht kein Konto, enthält keine Werbung und keine Analyse-Bausteine und speichert nur die Terminauswahl auf dem Gerät.
+
+Fertige Fassung zum Laden und Anleitung: https://kurszettel.com/app/
 
 ## Bauen
 
@@ -33,14 +35,18 @@ Lokal (falls jemand übernimmt): Flutter stable installieren, dann `flutter pub 
 
 ## Stand
 
-- Testfassung Android: mit dem Debug-Schlüssel signiert, nur zum Ausprobieren. Für Website- und Store-Verteilung kommt ein eigener Signierschlüssel (Geheimnisse im Repository-Bereich *Settings → Secrets*, nie im Code).
-- iOS: Code ist gemeinsam; Bau und Test erst mit dem Apple-Entwicklerkonto der Kurszettel GmbH (Codemagic oder TestFlight).
-- Gestaltung nach design-logo.md: Navy, Creme, Gold, Ticks; Schriften Libre Caslon Text (Titel), IBM Plex Mono (Meta), IBM Plex Sans (Text) – OFL-Lizenzen in assets/fonts. App-Symbol aus assets/icon: nur die beiden Ticks, ohne Schrift.
+- Android: Verteilung über kurszettel.com/app/, später F-Droid und Google Play. Signiert wird im Bau mit einem festen Schlüssel aus den Repository-Geheimnissen (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`); fehlen sie, mit einem Testschlüssel. Schlüssel und Passwort stehen nie im Code.
+- iOS: Code ist gemeinsam; Bau und Test folgen mit einem Apple-Entwicklerkonto.
+- Gestaltung: Navy, Creme, Gold, Ticks; Schriften Libre Caslon Text (Titel), IBM Plex Mono (Meta), IBM Plex Sans (Text) – OFL-Lizenzen in `assets/fonts`. App-Symbol aus `assets/icon`: nur die beiden Ticks, ohne Schrift.
 - Wiedergabe läuft bei gesperrtem Bildschirm weiter (just_audio_background), Steuerung in der Mitteilungsleiste.
-- Noch nicht drin: Hinweis auf neue Version, eigener Signierschlüssel.
+- Update-Hinweis: Die App liest das Feld `app` der Schnittstelle und verweist auf die Download-Seite; sie lädt keine ausführbaren Dateien nach.
+
+## Mitmachen
+
+Fehler und Vorschläge bitte als Issue. Die App enthält keine Anlageberatung und keine Empfehlungen zu einzelnen Wertpapieren; Beiträge, die das ändern, werden nicht übernommen.
 
 ## Lizenz
 
-Freie Software unter der GNU General Public License, Version 3 oder später (siehe `LICENSE`). Der Name „Kurszettel“ und das Logo sind nicht Teil der Lizenz. Schriften unter der SIL Open Font License (`assets/fonts`).
+Freie Software unter der GNU General Public License, Version 3 oder später (siehe `LICENSE`). Der Name „Kurszettel“ und das Logo sind nicht Teil der Lizenz: Wer die App verändert weitergibt, verwendet dafür einen eigenen Namen und ein eigenes Symbol. Schriften unter der SIL Open Font License (`assets/fonts`).
 
 Verantwortlich: Steffen Reukauf, podcast@kurszettel.com. Code wird von Claude (Anthropic) geschrieben und gepflegt.
