@@ -12,6 +12,8 @@ App zum Podcast **Kurszettel** (kurszettel.com) für Android und iOS: Podcast-Fo
 | `lib/format.dart` | Deutsche Datums- und Zeitangaben |
 | `.github/workflows/android.yml` | Automatischer Bau bei jedem Push auf `main` |
 
+**Nicht Teil dieses Repositorys und nicht öffentlich:** die Skripte auf dem Server von kurszettel.com (Meldungen, Freigabe, Termine, Schnittstelle). Offen ist nur die App.
+
 Die Schnittstelle liegt auf dem Webserver (`public_html/api/index.php`) und ist in der Projektnotiz `app-schnittstelle.md` beschrieben. Die App speichert keine Nutzerdaten außer der Terminauswahl auf dem Gerät.
 
 ## Bauen
