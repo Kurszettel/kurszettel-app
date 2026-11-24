@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import 'format.dart';
 import 'theme.dart';
 
 /// Ein gemeinsamer Spieler für Folgen und vorgelesene Meldungen.
-/// Version 1: Wiedergabe in der App. Sperrbildschirm-Steuerung folgt (just_audio_background).
+/// Läuft über just_audio_background auch bei gesperrtem Bildschirm weiter.
 class Spieler extends ChangeNotifier {
   Spieler._() {
     _player.playerStateStream.listen((_) => notifyListeners());
@@ -20,7 +21,7 @@ class Spieler extends ChangeNotifier {
   bool get aktiv => url != null;
   bool get spielt => _player.playing;
 
-  Future<void> spiele(String neueUrl, String neuerTitel) async {
+  Future<void> spiele(String neueUrl, String neuerTitel, {String bild = '', String art = 'Kurszettel'}) async {
     if (neueUrl.isEmpty) return;
     if (url == neueUrl) {
       _player.playing ? await _player.pause() : await _player.play();
@@ -30,7 +31,16 @@ class Spieler extends ChangeNotifier {
     titel = neuerTitel;
     notifyListeners();
     try {
-      await _player.setUrl(neueUrl);
+      await _player.setAudioSource(AudioSource.uri(
+        Uri.parse(neueUrl),
+        tag: MediaItem(
+          id: neueUrl,
+          title: neuerTitel,
+          album: art,
+          artist: 'Kurszettel',
+          artUri: bild.isEmpty ? null : Uri.parse(bild),
+        ),
+      ));
       await _player.play();
     } catch (_) {
       url = null;

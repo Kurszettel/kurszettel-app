@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import 'logo.dart';
 import 'player.dart';
@@ -9,8 +10,15 @@ import 'screens/news.dart';
 import 'screens/termine.dart';
 import 'theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Wiedergabe läuft weiter, wenn der Bildschirm gesperrt oder die App gewechselt wird;
+  // Steuerung in der Mitteilungsleiste und auf dem Sperrbildschirm.
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.kurszettel.app.audio',
+    androidNotificationChannelName: 'Wiedergabe',
+    androidNotificationOngoing: true,
+  );
   runApp(const KurszettelApp());
 }
 

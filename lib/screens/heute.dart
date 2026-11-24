@@ -169,7 +169,7 @@ class _HeuteSeiteState extends State<HeuteSeite> {
                         color: KZ.gold,
                         tooltip: laeuft ? 'Pause' : 'Anhören',
                         icon: Icon(laeuft ? Icons.pause_circle_filled : Icons.play_circle_filled),
-                        onPressed: f.audio.isEmpty ? null : () => sp.spiele(f.audio, f.titel),
+                        onPressed: f.audio.isEmpty ? null : () => sp.spiele(f.audio, f.titel, bild: f.bild, art: 'Podcast'),
                       );
                     },
                   ),

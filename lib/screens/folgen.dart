@@ -76,7 +76,7 @@ class _FolgeKachel extends StatelessWidget {
                   color: KZ.gold,
                   tooltip: laeuft ? 'Pause' : 'Abspielen',
                   icon: Icon(laeuft ? Icons.pause_circle_outline : Icons.play_circle_outline, size: 32),
-                  onPressed: folge.audio.isEmpty ? null : () => sp.spiele(folge.audio, folge.titel),
+                  onPressed: folge.audio.isEmpty ? null : () => sp.spiele(folge.audio, folge.titel, bild: folge.bild, art: 'Podcast'),
                 );
               },
             ),
@@ -114,7 +114,7 @@ class FolgeDetail extends StatelessWidget {
           const SizedBox(height: 12),
           Wrap(spacing: 8, runSpacing: 8, children: [
             FilledButton.icon(
-              onPressed: folge.audio.isEmpty ? null : () => sp.spiele(folge.audio, folge.titel),
+              onPressed: folge.audio.isEmpty ? null : () => sp.spiele(folge.audio, folge.titel, bild: folge.bild, art: 'Podcast'),
               icon: const Icon(Icons.headphones),
               label: const Text('Anhören'),
             ),

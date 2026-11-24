@@ -87,7 +87,7 @@ class _VorlesenKnopf extends StatelessWidget {
           tooltip: laeuft ? 'Pause' : 'Vorlesen',
           color: KZ.gold,
           icon: Icon(laeuft ? Icons.pause_circle_outline : Icons.record_voice_over_outlined),
-          onPressed: () => sp.spiele(meldung.audio, meldung.titel),
+          onPressed: () => sp.spiele(meldung.audio, meldung.titel, art: 'Kurzmeldung'),
         );
       },
     );
