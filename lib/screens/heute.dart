@@ -5,6 +5,7 @@ import '../format.dart';
 import '../logo.dart';
 import '../player.dart';
 import '../theme.dart';
+import '../widgets.dart';
 import 'folgen.dart';
 import 'news.dart';
 
