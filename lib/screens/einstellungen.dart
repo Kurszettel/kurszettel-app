@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../api.dart';
@@ -103,9 +104,6 @@ class _EinstellungenSeiteState extends State<EinstellungenSeite> {
         zeile(Icons.info_outline, 'Über Kurszettel',
             unter: 'Was die App ist und wer sie macht',
             tippen: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => UeberSeite(version: _version)))),
-        zeile(Icons.balance, 'Lizenz', unter: 'Freie Software, GNU GPL Version 3 oder später'),
-        zeile(Icons.description_outlined, 'Lizenzen der verwendeten Bausteine',
-            tippen: () => showLicensePage(context: context, applicationName: 'Kurszettel', applicationVersion: _version)),
         const Divider(),
         const Abschnitt('Kanäle'),
         link(Icons.public, 'kurszettel.com', 'https://kurszettel.com'),
@@ -116,10 +114,16 @@ class _EinstellungenSeiteState extends State<EinstellungenSeite> {
         link(Icons.alternate_email, 'X', 'https://x.com/kurszettel'),
         const Divider(),
         const Abschnitt('Rechtliches'),
-        link(Icons.list_alt, 'Positionen (Offenlegung)', 'https://kurszettel.com/positionen'),
-        link(Icons.gavel, 'Hinweise', 'https://kurszettel.com/hinweise'),
-        link(Icons.business, 'Impressum', 'https://kurszettel.com/impressum'),
-        link(Icons.privacy_tip_outlined, 'Datenschutz', 'https://kurszettel.com/datenschutz'),
+        zeile(Icons.business, 'Impressum',
+            tippen: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ImpressumSeite()))),
+        link(Icons.privacy_tip_outlined, 'Datenschutz', 'https://kurszettel.com/datenschutz#app'),
+        link(Icons.gavel, 'Hinweise zu Finanzinformationen', 'https://kurszettel.com/hinweise'),
+        link(Icons.list_alt, 'Offenlegung eigener Positionen', 'https://kurszettel.com/positionen'),
+        zeile(Icons.balance, 'Lizenz',
+            unter: 'Freie Software, GNU GPL Version 3 oder später',
+            tippen: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LizenzSeite()))),
+        zeile(Icons.description_outlined, 'Lizenzen der Bausteine',
+            tippen: () => showLicensePage(context: context, applicationName: 'Kurszettel', applicationVersion: _version)),
       ],
     );
   }
@@ -156,15 +160,97 @@ class UeberSeite extends StatelessWidget {
           const SizedBox(height: 20),
           Text('APP', style: KZ.rubrik),
           const SizedBox(height: 6),
-          Text('Version $version\nFreie Software unter der GNU GPL, Version 3 oder später.\n'
+          Text('Kurszettel-App, Version $version\n© 2026 Steffen Reukauf\n'
+              'Freie Software unter der GNU GPL, Version 3 oder später. '
+              'Name und Logo „Kurszettel“ sind nicht Teil der Lizenz.\n'
               'Die App speichert keine persönlichen Daten; nur deine Terminauswahl bleibt auf dem Gerät.',
               style: const TextStyle(height: 1.5)),
           const SizedBox(height: 20),
+          Wrap(spacing: 10, runSpacing: 8, children: [
+            OutlinedButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ImpressumSeite())),
+                child: const Text('Impressum')),
+            OutlinedButton(
+                onPressed: () => oeffne(context, 'https://github.com/Kurszettel/kurszettel-app'),
+                child: const Text('Quelltext')),
+          ]),
+        ],
+      ),
+    );
+  }
+}
+
+/// Kurzimpressum als Text in der App (auch ohne Verbindung lesbar).
+class ImpressumSeite extends StatelessWidget {
+  const ImpressumSeite({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Impressum')),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 28),
+        children: [
+          Text('ANBIETER', style: KZ.rubrik),
+          const SizedBox(height: 6),
+          const SelectableText(
+            'Kurszettel\nSteffen Reukauf\nParkstr. 22\n16775 Löwenberger Land\nE-Mail: podcast@kurszettel.com',
+            style: TextStyle(fontSize: 16, height: 1.5),
+          ),
+          const SizedBox(height: 20),
+          Text('VERANTWORTLICH', style: KZ.rubrik),
+          const SizedBox(height: 6),
+          const Text(
+            'Verantwortlich für journalistisch-redaktionelle Inhalte (§ 18 Abs. 2 MStV): '
+            'Steffen Reukauf, Anschrift wie oben.',
+            style: TextStyle(height: 1.5),
+          ),
+          const SizedBox(height: 20),
           Align(
             alignment: Alignment.centerLeft,
-            child: OutlinedButton(onPressed: () => oeffne(context, 'https://kurszettel.com/impressum'), child: const Text('Impressum')),
+            child: OutlinedButton(
+                onPressed: () => oeffne(context, 'https://kurszettel.com/impressum'),
+                child: const Text('Vollständiges Impressum')),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Voller Text der GNU GPL Version 3, in der App mitgeliefert.
+class LizenzSeite extends StatelessWidget {
+  const LizenzSeite({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Lizenz')),
+      body: FutureBuilder<String>(
+        future: rootBundle.loadString('assets/lizenz/GPL-3.0.txt'),
+        builder: (context, snap) {
+          if (!snap.hasData) return const Center(child: CircularProgressIndicator());
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 28),
+            children: [
+              const Text(
+                'Kurszettel-App · © 2026 Steffen Reukauf\n'
+                'Freie Software unter der GNU General Public License, Version 3 oder später. '
+                'Name und Logo „Kurszettel“ sind nicht Teil der Lizenz.',
+                style: TextStyle(height: 1.5),
+              ),
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: OutlinedButton(
+                    onPressed: () => oeffne(context, 'https://github.com/Kurszettel/kurszettel-app'),
+                    child: const Text('Quelltext')),
+              ),
+              const SizedBox(height: 16),
+              SelectableText(snap.data!, style: KZ.meta.copyWith(height: 1.45)),
+            ],
+          );
+        },
       ),
     );
   }

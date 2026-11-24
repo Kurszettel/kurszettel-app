@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'links.dart';
 import 'theme.dart';
 
 /// Lädt Daten, zeigt Ladeanzeige oder Fehler mit „Erneut versuchen“, erlaubt Herunterziehen zum Aktualisieren.
@@ -66,4 +67,21 @@ class Abschnitt extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),
         child: Text(text.toUpperCase(), style: KZ.rubrik),
       );
+}
+
+/// Fußzeile unter Meldungen: Berichterstattung, keine Anlageberatung – mit Link auf die Hinweise.
+class HinweisZeile extends StatelessWidget {
+  const HinweisZeile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => oeffne(context, 'https://kurszettel.com/hinweise'),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Text('Berichterstattung, keine Anlageberatung – kurszettel.com/hinweise',
+            style: Theme.of(context).textTheme.bodySmall),
+      ),
+    );
+  }
 }

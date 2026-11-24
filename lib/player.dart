@@ -49,6 +49,7 @@ class Spieler extends ChangeNotifier {
     } catch (_) {
       url = null;
       titel = null;
+      zusatz = null;
       notifyListeners();
     }
   }
@@ -59,6 +60,7 @@ class Spieler extends ChangeNotifier {
     await _player.stop();
     url = null;
     titel = null;
+    zusatz = null;
     notifyListeners();
   }
 

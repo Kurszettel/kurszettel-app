@@ -113,6 +113,7 @@ class _HeuteSeiteState extends State<HeuteSeite> {
           ],
         ]),
       ),
+      const Padding(padding: EdgeInsets.fromLTRB(16, 8, 16, 0), child: HinweisZeile()),
     ];
   }
 

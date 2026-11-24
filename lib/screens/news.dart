@@ -24,11 +24,15 @@ class NewsSeite extends StatelessWidget {
             if (i == m.length) {
               return Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text(
-                  'Gelesen von ${daten.sprecherin.isEmpty ? 'unserer digitalen Sprecherin' : daten.sprecherin}. '
-                  'Berichterstattung, keine Anlageberatung, keine Kauf- oder Verkaufsempfehlung.',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    'Gelesen von ${daten.sprecherin.isEmpty ? 'unserer digitalen Sprecherin' : daten.sprecherin}. '
+                    'Vorlesestimme: künstlich erzeugt.',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 6),
+                  const HinweisZeile(),
+                ]),
               );
             }
             return _MeldungKachel(meldung: m[i]);
@@ -87,7 +91,7 @@ class _VorlesenKnopf extends StatelessWidget {
           tooltip: laeuft ? 'Pause' : 'Vorlesen',
           color: KZ.gold,
           icon: Icon(laeuft ? Icons.pause_circle_outline : Icons.record_voice_over_outlined),
-          onPressed: () => sp.spiele(meldung.audio, meldung.titel, art: 'Kurzmeldung'),
+          onPressed: () => sp.spiele(meldung.audio, meldung.titel, art: 'Kurzmeldung', hinweis: 'Anna-Isabell · künstliche Stimme'),
         );
       },
     );

@@ -1,5 +1,7 @@
 # Kurszettel-App
 
+Kurszettel-App · © 2026 Steffen Reukauf · Lizenz: GPL-3.0-or-later (siehe `LICENSE`).
+
 App zum Podcast **Kurszettel** (kurszettel.com) für Android und iOS: Podcast-Folgen hören, Börsentermine mit Filter und Kalender-Übernahme, Kurzmeldungen mit Vorlesen.
 
 ## Aufbau
@@ -47,6 +49,6 @@ Fehler und Vorschläge bitte als Issue. Die App enthält keine Anlageberatung un
 
 ## Lizenz
 
-Freie Software unter der GNU General Public License, Version 3 oder später (siehe `LICENSE`). Der Name „Kurszettel“ und das Logo sind nicht Teil der Lizenz: Wer die App verändert weitergibt, verwendet dafür einen eigenen Namen und ein eigenes Symbol. Schriften unter der SIL Open Font License (`assets/fonts`).
+Freie Software unter der GNU General Public License, Version 3 oder später (siehe `LICENSE`). „Kurszettel“, die Wort-Bild-Marke und das Logo sind Kennzeichen von Steffen Reukauf (Markenanmeldung beim DPMA in Vorbereitung) und von der Lizenz ausgenommen. Weiterverbreitungen unter anderem Namen sind nach der Lizenz frei, dürfen aber nicht den Eindruck erwecken, vom Kurszettel zu stammen. Schriften unter der SIL Open Font License (`assets/fonts`).
 
-Verantwortlich: Steffen Reukauf, podcast@kurszettel.com. Code wird von Claude (Anthropic) geschrieben und gepflegt.
+Verantwortlich: Steffen Reukauf, podcast@kurszettel.com.
